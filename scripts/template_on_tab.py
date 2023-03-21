@@ -1,3 +1,10 @@
+import modules.scripts as scripts
+import gradio as gr
+import os
+
+from modules import script_callbacks
+
+
 def on_ui_tabs():
     with gr.Blocks(analytics_enabled=False) as ui_component:
         with gr.Row():
