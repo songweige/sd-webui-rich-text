@@ -16,12 +16,9 @@ class ExtensionTemplateScript(scripts.Script):
         # - in "txt2img" -> is_img2img is `False`
         # - in "img2img" -> is_img2img is `True`
         #
-        # below code show extension menu only in img2img
+        # below code always show extension menu
         def show(self, is_img2img):
-                if (is_img2img):
-                        return True
-                else:
-                        return False
+                return scripts.AlwaysVisible
 
         # Setup menu ui detail
         def ui(self, is_img2img):
@@ -36,7 +33,7 @@ class ExtensionTemplateScript(scripts.Script):
                         False,
                         label="Checkbox"
                 )
-                # TODO: add more UI components (cf. https://gradio.app/docs/#components) 
+                # TODO: add more UI components (cf. https://gradio.app/docs/#components)
                 return [angle, checkbox]
 
         # Extension main process
