@@ -7,7 +7,7 @@ from modules.processing import process_images, Processed
 from modules.processing import Processed
 from modules.shared import opts, cmd_opts, state
 
-class Script(scripts.Script):
+class ExtensionTemplateScript(scripts.Script):
         # Extension title in menu UI
         def title(self):
                 return "Extension Template"
@@ -44,9 +44,6 @@ class Script(scripts.Script):
         # args is [StableDiffusionProcessing, UI1, UI2, ...]
         def run(self, p, angle, checkbox):
                 # TODO: get UI info through UI object angle, checkbox
-
                 proc = process_images(p)
-
                 # TODO: add image edit process via Processed object proc
-
                 return proc
