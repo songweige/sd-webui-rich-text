@@ -22,17 +22,19 @@ class ExtensionTemplateScript(scripts.Script):
 
         # Setup menu ui detail
         def ui(self, is_img2img):
-                angle = gr.Slider(
-                        minimum=0.0,
-                        maximum=360.0,
-                        step=1,
-                        value=0,
-                        label="Angle"
-                )
-                checkbox = gr.Checkbox(
-                        False,
-                        label="Checkbox"
-                )
+                with gr.Accordion('Extension Template', open=False):
+                        with gr.Row():
+                                angle = gr.Slider(
+                                        minimum=0.0,
+                                        maximum=360.0,
+                                        step=1,
+                                        value=0,
+                                        label="Angle"
+                                )
+                                checkbox = gr.Checkbox(
+                                        False,
+                                        label="Checkbox"
+                                )
                 # TODO: add more UI components (cf. https://gradio.app/docs/#components)
                 return [angle, checkbox]
 
