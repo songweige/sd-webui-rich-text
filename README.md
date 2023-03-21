@@ -1,0 +1,1 @@
+# stable-diffusion-webui-extension-template
