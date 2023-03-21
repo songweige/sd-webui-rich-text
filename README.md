@@ -1,6 +1,6 @@
 # stable-diffusion-webui-extension-templates
 
-a template of create stable-diffusion-webui extension for understand and develop  quickly 
+a template of stable-diffusion-webui extension for understand and develop  quickly 
 
 ## basic design
 ```
