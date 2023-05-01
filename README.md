@@ -22,6 +22,15 @@ see `scripts/template.py`
 
 see `scripts/template_on_tab.py`
 
+
+## Pattern 3. ui on settings
+
+<img src="https://user-images.githubusercontent.com/128375799/235482423-61c15a3e-8239-41f8-bffb-16efaafc084d.png"  width="600"/>
+<img src="https://user-images.githubusercontent.com/128375799/235482466-9f7822f3-1ea9-4d1e-bbf5-cb98de041119.png"  width="600"/>
+
+
+see `scripts/template_on_settings.py`
+
 ## Ref.
 - [Developing custom scripts · AUTOMATIC1111/stable-diffusion-webui Wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Developing-custom-scripts)
 - [Developing extensions · AUTOMATIC1111/stable-diffusion-webui Wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Developing-extensions)
