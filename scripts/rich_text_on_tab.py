@@ -58,9 +58,8 @@ async (url_params) => {
 
 class RichText2Img():
     def __init__(self):
-        self.model = RegionDiffusionXL()
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.model_id = "stabilityai/stable-diffusion-xl-base-1.0"
+        self.model = RegionDiffusion(self.device, 'runwayml/stable-diffusion-v1-5')
 
 
 def load_url_params(url_params):
