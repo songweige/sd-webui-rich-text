@@ -43,3 +43,7 @@ Just as the font style distinguishes the styles of individual text elements, it 
 ![size](assets/size.png)
 
 Font size indicates the weight of each token in the final generation.
+
+## Acknowledgement
+
+The extension is built on the [extension-templates](https://github.com/udon-universe/stable-diffusion-webui-extension-templates). The rich-text editor is built on [Quill](https://quilljs.com/). The model code is built on [huggingface / diffusers](https://github.com/huggingface/diffusers#readme).
