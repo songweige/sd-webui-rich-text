@@ -1,37 +1,45 @@
-# stable-diffusion-webui-extension-templates
+# Rich-Text-to-Image for Stable Diffusion WebUI
+#### [Project Page](https://rich-text-to-image.github.io/) | [Paper](https://arxiv.org/abs/2304.06720) | [Code](https://github.com/songweige/rich-text-to-image) | [HuggingFace Demo](https://huggingface.co/spaces/songweig/rich-text-to-image) | [Video](https://youtu.be/ihDbAUh0LXk)
 
-a template of stable-diffusion-webui extension for understand and develop  quickly 
+The WebUI extension for integrating a rich-text editor for text-to-image generation.
 
-## basic design
-```
-├── install.py (optional)
-└── scripts
-    ├── ${extension_name}.py
-    ... (if extension need module division)
-```
+![image](https://github.com/songweige/sd-webui-rich-text/assets/22885450/c57cf981-8332-41fb-8f47-b03238311ca4)
 
-## Pattern 1. custom script
+This extension is for [AUTOMATIC1111's Stable Diffusion web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui), allows the Web UI to add [rich-text-to-image](https://rich-text-to-image.github.io/) to the original Stable Diffusion model to generate images. 
 
-<img src="https://user-images.githubusercontent.com/128375799/226570836-8a9c5640-5258-4b4e-9cbe-e139732d8419.png"  width="600"/>
+## Installation
 
-see `scripts/template.py`
+1. Open "Extensions" tab.
+1. Open "Install from URL" tab in the tab.
+1. Enter URL of this repo (https://github.com/songweige/sd-webui-rich-text) to "URL for extension's git repository".
+1. Press "Install" button.
+1. Restart Web UI.
 
-## Pattern 2. ui on tab
+## Usage
 
-<img src="https://user-images.githubusercontent.com/128375799/226570948-578706a3-a278-4228-a999-6147050f5706.png"  width="600"/>
-
-see `scripts/template_on_tab.py`
+The extension now supports [SD-v1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5) (default), [SD-XL-v1.0](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0), and [ANIMAGINE-XL](https://huggingface.co/Linaqruf/animagine-xl). The checkpoints will be automatically downloaded when the model is first selected.
 
 
-## Pattern 3. ui on settings
+#### Font Color
 
-<img src="https://user-images.githubusercontent.com/128375799/235482423-61c15a3e-8239-41f8-bffb-16efaafc084d.png"  width="600"/>
-<img src="https://user-images.githubusercontent.com/128375799/235482466-9f7822f3-1ea9-4d1e-bbf5-cb98de041119.png"  width="600"/>
+![color](assets/color.png)
 
+Font color is used to control the precise color of the generated objects. 
 
-see `scripts/template_on_settings.py`
+#### Footnote
 
-## Ref.
-- [Developing custom scripts · AUTOMATIC1111/stable-diffusion-webui Wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Developing-custom-scripts)
-- [Developing extensions · AUTOMATIC1111/stable-diffusion-webui Wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Developing-extensions)
-- [Extensions · AUTOMATIC1111/stable-diffusion-webui Wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Extensions) (to read real extension code)
+![footnote](assets/footnote.png)
+
+Footnotes provide supplementary descriptions for selected text elements. 
+
+#### Font Style
+
+![style](assets/font.png)
+
+Just as the font style distinguishes the styles of individual text elements, it is used to define the artistic style of specific areas in the generation.
+
+#### Font Size
+
+![size](assets/size.png)
+
+Font size indicates the weight of each token in the final generation.
