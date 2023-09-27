@@ -16,3 +16,6 @@ if not launch.is_installed("safetensors"):
 
 if not launch.is_installed("seaborn"):
     launch.run_pip("install seaborn==0.12.2", "requirements for Rich-Text-to-Image")
+
+if not launch.is_installed("scikit-learn"):
+    launch.run_pip("install scikit-learn==1.3.0", "requirements for Rich-Text-to-Image")
