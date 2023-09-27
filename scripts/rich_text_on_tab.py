@@ -229,7 +229,7 @@ def on_ui_tabs():
                                             minimum=0,
                                             maximum=1,
                                             step=0.01,
-                                            value=0.)
+                                            value=0.3)
                 inject_background = gr.Slider(label='Unformatted token preservation',
                                             info='(To affect less the tokens without any rich-text attributes, increase this.)',
                                             minimum=0,
