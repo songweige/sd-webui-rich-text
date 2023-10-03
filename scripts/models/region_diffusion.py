@@ -35,7 +35,8 @@ class RegionDiffusion(nn.Module):
                     model_id, subfolder='text_encoder').to(self.device)
                 self.unet = UNet2DConditionModel.from_pretrained(
                     model_id, subfolder="unet").to(self.device)
-            except:
+            except Exception as e:
+                print(f'[ERROR] loading stable diffusion {model_id} ... attempt {load_attemp} failed with error {e}')
                 continue
             if self.unet is not None and self.vae is not None and self.text_encoder is not None:
                 break
