@@ -773,6 +773,9 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
         add_text_embeds = add_text_embeds.to(device)
         add_time_ids = add_time_ids.to(device).repeat(batch_size * num_images_per_prompt, 1)
 
+        # make sure the VAE is in float32 mode, as it overflows in float16
+        self.vae.to(dtype=torch.float32)
+
         # 8. Denoising loop
         num_warmup_steps = len(timesteps) - num_inference_steps * self.scheduler.order
         if run_rich_text:
@@ -919,8 +922,6 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
                         if callback is not None and i % callback_steps == 0:
                             callback(i, t, latents)
 
-        # make sure the VAE is in float32 mode, as it overflows in float16
-        self.vae.to(dtype=torch.float32)
 
         use_torch_2_0_or_xformers = isinstance(
             self.vae.decoder.mid_block.attentions[0].processor,

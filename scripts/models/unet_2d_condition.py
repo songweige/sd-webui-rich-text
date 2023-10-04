@@ -23,7 +23,7 @@ from diffusers.loaders import UNet2DConditionLoadersMixin
 from diffusers.utils import BaseOutput, logging
 from scripts.models.activations import get_activation
 
-from diffusers.models.embeddings import (
+from scripts.models.embeddings import (
     GaussianFourierProjection,
     ImageHintTimeEmbedding,
     ImageProjection,

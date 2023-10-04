@@ -19,7 +19,7 @@ from torch import nn
 
 from diffusers.utils import maybe_allow_in_graph
 from scripts.models.activations import get_activation
-from diffusers.models.embeddings import CombinedTimestepLabelEmbeddings
+from scripts.models.embeddings import CombinedTimestepLabelEmbeddings
 
 from scripts.models.attention_processor import Attention
 
