@@ -21,7 +21,7 @@ import torch.utils.checkpoint
 from diffusers.configuration_utils import ConfigMixin, register_to_config
 from diffusers.loaders import UNet2DConditionLoadersMixin
 from diffusers.utils import BaseOutput, logging
-from diffusers.models.activations import get_activation
+from scripts.models.activations import get_activation
 
 from diffusers.models.embeddings import (
     GaussianFourierProjection,
