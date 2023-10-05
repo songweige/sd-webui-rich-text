@@ -18,8 +18,8 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from diffusers.utils import is_torch_version, logging
-from diffusers.models.attention import AdaGroupNorm
+from diffusers_official.utils import is_torch_version, logging
+from diffusers_official.models.attention import AdaGroupNorm
 from scripts.models.attention_processor import Attention, AttnAddedKVProcessor, AttnAddedKVProcessor2_0
 from scripts.models.dual_transformer_2d import DualTransformer2DModel
 from scripts.models.resnet import Downsample2D, FirDownsample2D, FirUpsample2D, KDownsample2D, KUpsample2D, ResnetBlock2D, Upsample2D

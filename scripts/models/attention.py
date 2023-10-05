@@ -17,7 +17,7 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from diffusers.utils import maybe_allow_in_graph
+from diffusers_official.utils import maybe_allow_in_graph
 from scripts.models.activations import get_activation
 from scripts.models.embeddings import CombinedTimestepLabelEmbeddings
 

@@ -226,7 +226,7 @@ def on_ui_tabs():
                                               value=0.45)
                 inject_interval = gr.Slider(label='Detail preservation',
                                             info='(To preserve more structure from plain-text generation, increase this. To see more rich-text attributes, decrease this.)',
-                                            minimum=0,
+                                            minimum=0.3,
                                             maximum=1,
                                             step=0.01,
                                             value=0.3)

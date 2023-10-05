@@ -18,9 +18,9 @@ import torch
 import torch.nn as nn
 import torch.utils.checkpoint
 
-from diffusers.configuration_utils import ConfigMixin, register_to_config
-from diffusers.loaders import UNet2DConditionLoadersMixin
-from diffusers.utils import BaseOutput, logging
+from diffusers_official.configuration_utils import ConfigMixin, register_to_config
+from diffusers_official.loaders import UNet2DConditionLoadersMixin
+from diffusers_official.utils import BaseOutput, logging
 from scripts.models.activations import get_activation
 
 from scripts.models.embeddings import (
@@ -34,7 +34,7 @@ from scripts.models.embeddings import (
     TimestepEmbedding,
     Timesteps,
 )
-from diffusers.models.modeling_utils import ModelMixin
+from diffusers_official.models.modeling_utils import ModelMixin
 
 from scripts.models.attention_processor import AttentionProcessor, AttnProcessor
 

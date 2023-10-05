@@ -1,4 +1,4 @@
-# Adapted from diffusers.pipelines.stable_diffusion.pipelines.stable_diffusion_xl.pipeline_stable_diffusion_xl.py
+# Adapted from diffusers_official.pipelines.stable_diffusion.pipelines.stable_diffusion_xl.pipeline_stable_diffusion_xl.py
 
 import inspect
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
@@ -6,32 +6,32 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import torch
 from transformers import CLIPTextModel, CLIPTextModelWithProjection, CLIPTokenizer
 
-from diffusers.image_processor import VaeImageProcessor
-from diffusers.loaders import FromSingleFileMixin, LoraLoaderMixin, TextualInversionLoaderMixin
-# from diffusers.models import AutoencoderKL, UNet2DConditionModel
-from diffusers.models import AutoencoderKL
+from diffusers_official.image_processor import VaeImageProcessor
+from diffusers_official.loaders import FromSingleFileMixin, LoraLoaderMixin, TextualInversionLoaderMixin
+# from diffusers_official.models import AutoencoderKL, UNet2DConditionModel
+from diffusers_official.models import AutoencoderKL
 
-from diffusers.models.attention_processor import (
+from diffusers_official.models.attention_processor import (
     AttnProcessor2_0,
     LoRAAttnProcessor2_0,
     LoRAXFormersAttnProcessor,
     XFormersAttnProcessor,
 )
-from diffusers.schedulers import EulerDiscreteScheduler
-from diffusers.utils import (
+from diffusers_official.schedulers import EulerDiscreteScheduler
+from diffusers_official.utils import (
     is_accelerate_available,
     is_accelerate_version,
     logging,
     randn_tensor,
     replace_example_docstring,
 )
-from diffusers.pipelines.pipeline_utils import DiffusionPipeline
-from diffusers.pipelines.stable_diffusion_xl.watermark import StableDiffusionXLWatermarker
+from diffusers_official.pipelines.pipeline_utils import DiffusionPipeline
+from diffusers_official.pipelines.stable_diffusion_xl.watermark import StableDiffusionXLWatermarker
 
 ### cutomized modules
 import collections
 from functools import partial
-from diffusers.pipelines.stable_diffusion_xl import StableDiffusionXLPipelineOutput
+from diffusers_official.pipelines.stable_diffusion_xl import StableDiffusionXLPipelineOutput
 	
 from scripts.models.unet_2d_condition import UNet2DConditionModel	
 from scripts.models.utils.attention_utils import CrossAttentionLayers_XL
@@ -142,7 +142,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
         self.forward_hooks = []
         self.forward_replacement_hooks = []
 
-    # Overwriting the method from diffusers.pipelines.diffusion_pipeline.DiffusionPipeline
+    # Overwriting the method from diffusers_official.pipelines.diffusion_pipeline.DiffusionPipeline
     @property
     def device(self) -> torch.device:
         r"""
@@ -152,7 +152,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
 
         return torch.device(self.device_type)
 
-    # Copied from diffusers.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.enable_vae_slicing
+    # Copied from diffusers_official.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.enable_vae_slicing
     def enable_vae_slicing(self):
         r"""
         Enable sliced VAE decoding.
@@ -162,7 +162,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
         """
         self.vae.enable_slicing()
 
-    # Copied from diffusers.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.disable_vae_slicing
+    # Copied from diffusers_official.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.disable_vae_slicing
     def disable_vae_slicing(self):
         r"""
         Disable sliced VAE decoding. If `enable_vae_slicing` was previously invoked, this method will go back to
@@ -170,7 +170,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
         """
         self.vae.disable_slicing()
 
-    # Copied from diffusers.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.enable_vae_tiling
+    # Copied from diffusers_official.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.enable_vae_tiling
     def enable_vae_tiling(self):
         r"""
         Enable tiled VAE decoding.
@@ -180,7 +180,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
         """
         self.vae.enable_tiling()
 
-    # Copied from diffusers.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.disable_vae_tiling
+    # Copied from diffusers_official.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.disable_vae_tiling
     def disable_vae_tiling(self):
         r"""
         Disable tiled VAE decoding. If `enable_vae_tiling` was previously invoked, this method will go back to
@@ -241,7 +241,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
         self.final_offload_hook = hook
 
     @property
-    # Copied from diffusers.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline._execution_device
+    # Copied from diffusers_official.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline._execution_device
     def _execution_device(self):
         r"""
         Returns the device on which the pipeline's models will be executed. After calling
@@ -447,7 +447,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
 
         return prompt_embeds, negative_prompt_embeds, pooled_prompt_embeds, negative_pooled_prompt_embeds
 
-    # Copied from diffusers.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.prepare_extra_step_kwargs
+    # Copied from diffusers_official.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.prepare_extra_step_kwargs
     def prepare_extra_step_kwargs(self, generator, eta):
         # prepare extra kwargs for the scheduler step, since not all schedulers have the same signature
         # eta (η) is only used with the DDIMScheduler, it will be ignored for other schedulers.
@@ -524,7 +524,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
                 "If `negative_prompt_embeds` are provided, `negative_pooled_prompt_embeds` also have to be passed. Make sure to generate `negative_pooled_prompt_embeds` from the same text encoder that was used to generate `negative_prompt_embeds`."
             )
 
-    # Copied from diffusers.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.prepare_latents
+    # Copied from diffusers_official.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.prepare_latents
     def prepare_latents(self, batch_size, num_channels_latents, height, width, dtype, device, generator, latents=None):
         shape = (batch_size, num_channels_latents, height // self.vae_scale_factor, width // self.vae_scale_factor)
         if isinstance(generator, list) and len(generator) != batch_size:

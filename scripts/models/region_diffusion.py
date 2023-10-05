@@ -4,7 +4,7 @@ import collections
 import torch.nn as nn
 from functools import partial
 from transformers import CLIPTextModel, CLIPTokenizer, logging
-from diffusers import AutoencoderKL, PNDMScheduler, EulerDiscreteScheduler, DPMSolverMultistepScheduler
+from diffusers_official import AutoencoderKL, PNDMScheduler, EulerDiscreteScheduler, DPMSolverMultistepScheduler
 from scripts.models.unet_2d_condition import UNet2DConditionModel
 from scripts.models.utils.attention_utils import CrossAttentionLayers, SelfAttentionLayers
 
