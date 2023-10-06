@@ -59,7 +59,8 @@ async (url_params) => {
 class RichText2Img():
     def __init__(self):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.model = RegionDiffusion(self.device, 'runwayml/stable-diffusion-v1-5')
+        # self.model = RegionDiffusion(self.device, 'runwayml/stable-diffusion-v1-5')
+        self.model = None
 
 
 def load_url_params(url_params):
@@ -93,13 +94,13 @@ def on_ui_tabs():
     ):
         model = richtext2img.model
         if model_id == "runwayml/stable-diffusion-v1-5":
-            if model.model_id != model_id:
+            if model is None or model.model_id != model_id:
                 richtext2img.model = RegionDiffusion(device, model_id)
                 model = richtext2img.model
             width = 512
             height = 512
         elif model_id in ["stabilityai/stable-diffusion-xl-base-1.0", "Linaqruf/animagine-xl"]:
-            if model.model_id != model_id:
+            if  model is None or model.model_id != model_id:
                 richtext2img.model = RegionDiffusionXL(model_id)
                 model = richtext2img.model
             width = 1024
@@ -226,7 +227,7 @@ def on_ui_tabs():
                                               value=0.45)
                 inject_interval = gr.Slider(label='Detail preservation',
                                             info='(To preserve more structure from plain-text generation, increase this. To see more rich-text attributes, decrease this.)',
-                                            minimum=0.3,
+                                            minimum=0,
                                             maximum=1,
                                             step=0.01,
                                             value=0.3)
