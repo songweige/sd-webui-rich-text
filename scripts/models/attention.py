@@ -18,8 +18,8 @@ import torch.nn.functional as F
 from torch import nn
 
 from diffusers_official.utils import maybe_allow_in_graph
-from scripts.models.activations import get_activation
-from scripts.models.embeddings import CombinedTimestepLabelEmbeddings
+from diffusers_official.models.activations import get_activation
+from diffusers_official.models.embeddings import CombinedTimestepLabelEmbeddings
 
 from scripts.models.attention_processor import Attention
 

@@ -19,9 +19,9 @@ import torch.nn.functional as F
 from torch import nn
 
 from diffusers_official.configuration_utils import ConfigMixin, register_to_config
-from scripts.models.embeddings import ImagePositionalEmbeddings
+from diffusers_official.models.embeddings import ImagePositionalEmbeddings
 from diffusers_official.utils import BaseOutput, deprecate
-from scripts.models.embeddings import PatchEmbed
+from diffusers_official.models.embeddings import PatchEmbed
 from diffusers_official.models.modeling_utils import ModelMixin
 
 from scripts.models.attention import BasicTransformerBlock
