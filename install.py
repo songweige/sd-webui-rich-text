@@ -19,3 +19,6 @@ if not launch.is_installed("seaborn"):
 
 if not launch.is_installed("scikit-learn"):
     launch.run_pip("install scikit-learn==1.3.0", "requirements for Rich-Text-to-Image")
+
+if not launch.is_installed("threadpoolctl"):
+    launch.run_pip("install threadpoolctl==3.1.0", "requirements for Rich-Text-to-Image")

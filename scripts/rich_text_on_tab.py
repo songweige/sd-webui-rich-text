@@ -34,10 +34,10 @@ If you are encountering an error or not achieving your desired outcome, here are
 
 canvas_html = """<iframe id='rich-text-root' style='width:100%' height='360px' src='file=./extensions/sd-webui-rich-text/rich-text-to-json-iframe.html' frameborder='0' scrolling='no'></iframe>"""
 get_js_data = """
-async (model_id, text_input, negative_prompt, num_segments, segment_threshold, inject_interval, inject_background, seed, color_guidance_weight, rich_text_input, steps, guidance_weights) => {
+async (model_id, text_input, negative_prompt, num_segments, segment_threshold, inject_interval, inject_background, seed, color_guidance_weight, rich_text_input, height, width, steps, guidance_weights) => {
   const richEl = document.getElementById("rich-text-root");
   const data = richEl? richEl.contentDocument.body._data : {};
-  return [model_id, text_input, negative_prompt, num_segments, segment_threshold, inject_interval, inject_background, seed, color_guidance_weight, JSON.stringify(data), steps, guidance_weights];
+  return [model_id, text_input, negative_prompt, num_segments, segment_threshold, inject_interval, inject_background, seed, color_guidance_weight, JSON.stringify(data), height, width, steps, guidance_weights];
 }
 """
 set_js_data = """
@@ -87,8 +87,8 @@ def on_ui_tabs():
         seed: int,
         color_guidance_weight: float,
         rich_text_input: str,
-        # height: int,
-        # width: int,
+        height: int,
+        width: int,
         steps: int,
         guidance_weight: float,
     ):
@@ -97,14 +97,16 @@ def on_ui_tabs():
             if model is None or model.model_id != model_id:
                 richtext2img.model = RegionDiffusion(device, model_id)
                 model = richtext2img.model
-            width = 512
-            height = 512
+            if width == 0 or height == 0:
+                width = 512
+                height = 512
         elif model_id in ["stabilityai/stable-diffusion-xl-base-1.0", "Linaqruf/animagine-xl"]:
             if  model is None or model.model_id != model_id:
                 richtext2img.model = RegionDiffusionXL(model_id)
                 model = richtext2img.model
-            width = 1024
-            height = 1024
+            if width == 0 or height == 0:
+                width = 1024
+                height = 1024
         else:
             raise gr.Error("Please select a model.")
         run_dir = 'results/'
@@ -266,14 +268,8 @@ def on_ui_tabs():
                                                 maximum=50,
                                                 step=0.1,
                                                 value=8.5)
-                    # width = gr.Dropdown(choices=[1024],
-                    #                     value=1024,
-                    #                     label='Width',
-                    #                     visible=True)
-                    # height = gr.Dropdown(choices=[1024],
-                    #                      value=1024,
-                    #                      label='height',
-                    #                      visible=True)
+                    width = gr.Slider(minimum=64, maximum=2048, step=8, label="Width", value=0)
+                    height = gr.Slider(minimum=64, maximum=2048, step=8, label="Height", value=0)
 
                 with gr.Row():
                     with gr.Column(scale=1, min_width=100):
@@ -288,13 +284,7 @@ def on_ui_tabs():
                     segments = gr.Image(label='Segmentation')
                 with gr.Row():
                     token_map = gr.Image(label='Token Maps')
-                # with gr.Row(visible=False) as share_row:
-                #     with gr.Group(elem_id="share-btn-container"):
-                #         community_icon = gr.HTML(community_icon_html)
-                #         loading_icon = gr.HTML(loading_icon_html)
-                #         share_button = gr.Button(
-                #             "Share to community", elem_id="share-btn")
-                #         share_button.click(None, [], [], _js=share_js)
+
         generate_button.click(fn=lambda: gr.update(visible=False), inputs=None, queue=False).then(
             fn=generate,
             inputs=[
@@ -308,6 +298,8 @@ def on_ui_tabs():
                 seed,
                 color_guidance_weight,
                 rich_text_input,
+                height,
+                width,
                 steps,
                 guidance_weight,
             ],

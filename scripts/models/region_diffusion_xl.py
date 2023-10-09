@@ -1095,7 +1095,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
             # out[0] - final output of residual layer
             # out[1] - residual hidden feature
             # import ipdb;ipdb.set_trace()
-            assert out[1].shape[-1] == 64
+            # assert out[1].shape[-1] == 64
             activations[name] = out[1].detach()
         attention_dict = collections.defaultdict(list)
         for name, module in self.unet.named_modules():

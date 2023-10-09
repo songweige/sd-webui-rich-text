@@ -597,24 +597,27 @@ def get_token_maps(selfattn_maps, crossattn_maps, n_maps, save_dir, width, heigh
         sampler_order (int): Sampler order
     """
 
-    resolution = 32
+    target_height = np.ceil(height / 4).astype(int)
+    target_width = np.ceil(width / 4).astype(int)
+    target_hw = target_height * target_width
+    hw = width * height
     # attn_maps_1024 = [attn_map for attn_map in selfattn_maps.values(
     # ) if attn_map.shape[1] == resolution**2]
     # attn_maps_1024 = torch.cat(attn_maps_1024).mean(0).cpu().numpy()
-    attn_maps_1024 = {8: [], 16: [], 32: [], 64: []}
+    attn_maps_1024 = {target_hw: []}
     for attn_map in selfattn_maps.values():
-        resolution_map = np.sqrt(attn_map.shape[1]).astype(int)
-        if resolution_map != resolution:
+        resolution_map = attn_map.shape[1]
+        if resolution_map != target_hw:
             continue
         # attn_map = torch.nn.functional.interpolate(rearrange(attn_map, '1 c (h w) -> 1 c h w', h=resolution_map), (resolution, resolution),
         #                                            mode='bicubic', antialias=True)
         # attn_map = rearrange(attn_map, '1 (h w) a b -> 1 (a b) h w', h=resolution_map)
         attn_map = attn_map.reshape(
-            1, resolution_map, resolution_map, resolution_map**2).permute([3, 0, 1, 2]).float()
-        attn_map = torch.nn.functional.interpolate(attn_map, (resolution, resolution),
+            1, target_height, target_width, resolution_map).permute([3, 0, 1, 2]).float()
+        attn_map = torch.nn.functional.interpolate(attn_map, (target_height, target_width),
                                                    mode='bicubic', antialias=True)
         attn_maps_1024[resolution_map].append(attn_map.permute([1, 2, 3, 0]).reshape(
-            1, resolution**2, resolution_map**2))
+            1, target_hw, resolution_map))
     attn_maps_1024 = torch.cat([torch.cat(v).mean(0).cpu()
                                 for v in attn_maps_1024.values() if len(v) > 0], -1).numpy()
     if save_attn:
@@ -633,11 +636,8 @@ def get_token_maps(selfattn_maps, crossattn_maps, n_maps, save_dir, width, heigh
     # spatial_sim = rbf_kernel(dists, dists)*delta
     sc = SpectralClustering(num_segments, affinity='precomputed', n_init=100,
                             assign_labels='kmeans')
-    import logging
-    logging.disable(logging.CRITICAL)
     clusters = sc.fit_predict(attn_maps_1024)
-    logging.disable(logging.NOTSET)
-    clusters = clusters.reshape(resolution, resolution)
+    clusters = clusters.reshape(target_height, target_width)
     fig = plt.figure()
     plt.imshow(clusters)
     plt.axis('off')
@@ -660,7 +660,7 @@ def get_token_maps(selfattn_maps, crossattn_maps, n_maps, save_dir, width, heigh
         # continue
         attn_map = attn_map.reshape(
             1, resolution_map, resolution_map, -1).permute([0, 3, 1, 2]).float()
-        attn_map = torch.nn.functional.interpolate(attn_map, (resolution, resolution),
+        attn_map = torch.nn.functional.interpolate(attn_map, (target_height, target_width),
                                                    mode='bicubic', antialias=True)
         cross_attn_maps_1024.append(attn_map.permute([0, 2, 3, 1]))
 
