@@ -860,9 +860,11 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
                             if not latents.requires_grad:
                                 latents.requires_grad = True
                             # import ipdb;ipdb.set_trace()
-                            latents_0 = self.predict_x0(latents, noise_pred, t).to(dtype=latents.dtype)
+                            # latents_0 = self.predict_x0(latents, noise_pred, t).to(dtype=latents.dtype)
+                            latents_0 = self.predict_x0(latents, noise_pred, t).to(dtype=torch.bfloat16)
                             latents_inp = latents_0 / self.vae.config.scaling_factor
-                            imgs = self.vae.decode(latents_inp.to(dtype=torch.float32)).sample
+                            # imgs = self.vae.decode(latents_inp.to(dtype=torch.float32)).sample
+                            imgs = self.vae.to(dtype=latents_inp.dtype).decode(latents_inp).sample
                             imgs = (imgs / 2 + 0.5).clamp(0, 1)
                             loss_total = 0.
                             for attn_map, rgb_val in zip(text_format_dict['color_obj_atten'], text_format_dict['target_RGB']):
@@ -874,6 +876,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
                             loss_total.backward()
                         latents = (
                             latents - latents.grad * text_format_dict['color_guidance_weight'] * text_format_dict['color_obj_atten_all']).detach().clone().to(dtype=prompt_embeds.dtype)
+                        self.unet.to(device=latents.device)
 
                     # apply background injection
                     if i == int(inject_background * len(self.scheduler.timesteps)) and inject_background > 0:
@@ -1032,7 +1035,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
             PyTorch Forward hook to save outputs at each forward pass.
             """
             if 'attn1' in name:
-                modified_args = (args[0], self.self_attention_maps_cur[name])
+                modified_args = (args[0], self.self_attention_maps_cur[name].to(args[0].device))
                 return modified_args
                 # cross attention injection
             # elif 'attn2' in name:
@@ -1048,7 +1051,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
             PyTorch Forward hook to save outputs at each forward pass.
             """
             modified_args = (args[0], args[1],
-                             self.self_attention_maps_cur[name])
+                             self.self_attention_maps_cur[name].to(args[0].device))
             return modified_args
         for name, module in self.unet.named_modules():
             leaf_name = name.split('.')[-1]
@@ -1086,7 +1089,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
                 # activations[name] = out[1][1].detach()
             else:
                 assert out[1][1].shape[-1] != 77
-                activations[name] = out[1][1].detach()
+                activations[name] = out[1][1].detach().cpu()
 
         def save_resnet_activations(activations, name, module, inp, out):
             r"""
@@ -1096,7 +1099,7 @@ class RegionDiffusionXL(DiffusionPipeline, FromSingleFileMixin):
             # out[1] - residual hidden feature
             # import ipdb;ipdb.set_trace()
             # assert out[1].shape[-1] == 64
-            activations[name] = out[1].detach()
+            activations[name] = out[1].detach().cpu()
         attention_dict = collections.defaultdict(list)
         for name, module in self.unet.named_modules():
             leaf_name = name.split('.')[-1]
